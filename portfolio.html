@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jyothirmai Akkireddy - Frontend Developer Portfolio</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: transparent; /* Changed to transparent for video visibility */
+            color: #F0F6FC; /* Light Text */
+            cursor: none; /* Hide default cursor to show the Canvas trail */
+            min-height: 100vh;
+            /* Ensure the content body sits on top of the canvas */
+            position: relative;
+            z-index: 10; 
+        }
+        /* Custom scrollbar for aesthetics */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #161B22; }
+        ::-webkit-scrollbar-thumb { background: #00C6FF; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0099CC; }
+
+        /* Custom glow effect for the card */
+        .glow-card {
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.4), 0 0 30px rgba(0, 198, 255, 0.2);
+            transition: transform 0.3s ease;
+            background-color: rgba(22, 27, 34, 0.85); /* Added semi-transparency to cards */
+            backdrop-filter: blur(5px); /* Added blur for better readability */
+        }
+        .glow-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* New Video Background Styles */
+        #background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2; /* Deepest layer */
+            object-fit: cover;
+        }
+
+        /* Dark Overlay for contrast over the video */
+        #video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* 60% transparent black */
+            z-index: -1; /* Above the video, below the content */
+        }
+
+
+        /* Full-screen Canvas for the optimized cosmic trail */
+        #cosmic-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Place above the video and overlay, but below z-10 content */
+            pointer-events: none; /* Crucial: allows clicks to pass through to the content */
+        }
+        
+        /* Styling for the circular image container */
+        .image-container {
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(45deg, #00C6FF, #0099CC, #1D2D50); /* Gradient border */
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.7);
+            animation: pulse 4s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 198, 255, 0.7); }
+            50% { box-shadow: 0 0 30px rgba(0, 198, 255, 1); }
+        }
+
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    
+    <!-- Video Background (NOTE: You must save your video as 'background.mp4' in the same folder) -->
+    <video autoplay loop muted playsinline id="background-video">
+        <source src="/background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <!-- Dark Overlay for Readability -->
+    <div id="video-overlay"></div>
+
+    <!-- Canvas for the optimized Cosmic Mouse Trail -->
+    <canvas id="cosmic-canvas"></canvas>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        
+        <!-- Header & Navigation -->
+        <header class="mb-12 border-b border-gray-700 pb-4 sticky top-0 z-50 bg-black/30 backdrop-blur-md">
+            <h1 class="text-3xl font-extrabold text-[#00C6FF] tracking-tight mb-4">Jyothirmai Akkireddy</h1>
+            <nav class="flex flex-wrap gap-2 sm:gap-4 text-sm font-medium">
+                <button class="nav-link py-2 px-3 rounded-lg transition duration-200 bg-[#00C6FF]/10 text-[#00C6FF] hover:bg-[#00C6FF]/20" data-target="home">Home</button>
+                <button class="nav-link py-2 px-3 rounded-lg transition duration-200 hover:bg-white/10" data-target="skills">Skills</button>
+                <button class="nav-link py-2 px-3 rounded-lg transition duration-200 hover:bg-white/10" data-target="projects">Projects</button>
+                <button class="nav-link py-2 px-3 rounded-lg transition duration-200 hover:bg-white/10" data-target="education">Education & Certifications</button>
+                <button class="nav-link py-2 px-3 rounded-lg transition duration-200 hover:bg-white/10" data-target="contact">Contact & Links</button>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="content-container" class="space-y-16">
+
+            <!-- 1. HOME SECTION (Default View) -->
+            <section id="home" class="content-section grid md:grid-cols-3 gap-10 items-center">
+                
+                <!-- Circular Image Column -->
+                <div class="md:col-span-1 flex justify-center order-1 md:order-none">
+                    <div class="image-container w-60 h-60 p-1">
+                        <!-- Placeholder for your circular photo -->
+                        <img src="/prof.jpg" 
+                             alt="Jyothirmai Akkireddy" 
+                             class="w-full h-full object-cover rounded-full" />
+                    </div>
+                </div>
+
+                <!-- Career Objective Column -->
+                <div class="md:col-span-2 space-y-4 order-2 md:order-none">
+                    <p class="text-lg text-gray-400 font-semibold uppercase tracking-widest">Aspiring Frontend Developer</p>
+                    <h2 class="text-5xl sm:text-7xl font-extrabold leading-tight">
+                        <span class="text-[#00C6FF]">Building</span> Modern, <br>
+                        Responsive Web Interfaces.
+                    </h2>
+                    <p class="text-xl text-gray-300 mt-6 max-w-2xl">
+                        Aspiring Frontend Developer with strong team management and multitasking abilities. Aiming to contribute responsive, user-friendly web interfaces while effectively handling multiple tasks. Seeking an internship where I can apply my skills and grow professionally.
+                    </p>
+                    <div class="pt-6">
+                        <a href="#skills" class="show-skills-link inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-[#00C6FF] hover:bg-[#0099CC] transition duration-300">
+                            Explore My Skills & Projects →
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. SKILLS SECTION -->
+            <section id="skills" class="content-section hidden">
+                <h2 class="text-4xl font-bold text-[#00C6FF] mb-8 border-b border-gray-700 pb-4">💻 Technical Toolkit</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Frontend -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-200">Frontend Development</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><span class="text-[#00C6FF] mr-2">→</span> HTML (Structure)</li>
+                            <li><span class="text-[#00C6FF] mr-2">→</span> CSS (Styling, Responsive Design)</li>
+                            <li><span class="text-[#00C6FF] mr-2">→</span> JavaScript (Interactivity)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Programming & Logic -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-200">Core Programming</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><span class="text-[#00C6FF] mr-2">→</span> Core Java</li>
+                            <li><span class="text-[#00C6FF] mr-2">→</span> Data Structures & Algorithms</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tools & Other -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-200">Tools & Soft Skills</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><span class="text-[#00C6FF] mr-2">→</span> VS Code, Chrome DevTools</li>
+                            <li><span class="text-[#00C6FF] mr-2">→</span> Git & GitHub (Version Control)</li>
+                            <li><span class="text-[#00C6FF] mr-2">→</span> Problem Solving, Time Management</li>
+                            <li><span class="text-[#00C6FF] mr-2">→</span> Basic Video Editing</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. PROJECTS SECTION -->
+            <section id="projects" class="content-section hidden">
+                <h2 class="text-4xl font-bold text-[#00C6FF] mb-8 border-b border-gray-700 pb-4">🛠 Portfolio Projects</h2>
+                
+                <div class="space-y-8">
+                    <!-- Project 1: Amazon Clone -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-2">⭐ Amazon Clone <span class="text-sm font-normal text-gray-400">(HTML & CSS)</span></h3>
+                        <p class="text-gray-300 mb-3">Built a responsive Amazon homepage using pure HTML & CSS.</p>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li>Designed navigation bar, product sections, deals layout, and footer.</li>
+                            <li>Focused intensely on layout accuracy and mobile responsiveness.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Project 2: Portfolio Website -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-2">⭐ Portfolio Website <span class="text-sm font-normal text-gray-400">(Self-Built)</span></h3>
+                        <p class="text-gray-300 mb-3">Created a responsive personal portfolio website (the foundation for this design).</p>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li>Showcased skills, projects, and certifications.</li>
+                            <li>Applied best practices in design and user experience.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Project 3: Tic Tac Toe -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-2">⭐ Tic Tac Toe Game <span class="text-sm font-normal text-gray-400">(HTML, CSS, JavaScript)</span></h3>
+                        <p class="text-gray-300 mb-3">Developed an interactive player-vs-player Tic Tac Toe game.</p>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li>Implemented core game logic using JavaScript.</li>
+                            <li>Features include win detection and reset functionality.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 4. EDUCATION & CERTIFICATIONS SECTION -->
+            <section id="education" class="content-section hidden">
+                <h2 class="text-4xl font-bold text-[#00C6FF] mb-8 border-b border-gray-700 pb-4">🎓 Education & Certifications</h2>
+                
+                <div class="space-y-10">
+                    
+                    <!-- Education Block -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-2">B.Tech — Computer Science and Engineering (CSE)</h3>
+                        <p class="text-lg text-[#00C6FF] font-medium">BVC Engineering College, Rajanagaram</p>
+                        <p class="text-gray-400">Year of Study: 2024 – 2028 | CGPA: 9.36</p>
+                    </div>
+
+                    <!-- Certifications Block -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-4">📜 Certifications</h3>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2 pl-4">
+                            <li>**Front-End Developer Course** — Meta (Coursera)</li>
+                            <li>**Core Java** — Data Creations</li>
+                            <li>**C Language** — Data Creations</li>
+                            <li>AI Tools & ChatGPT Workshop — be10x</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Achievements -->
+                <div class="mt-10 p-6 rounded-xl glow-card">
+                    <h3 class="text-2xl font-semibold mb-4">🏆 Achievements</h3>
+                    <ul class="list-disc list-inside text-gray-400 space-y-2 pl-4">
+                        <li>Developed my own personal portfolio.</li>
+                        <li>Built 3+ solid frontend projects.</li>
+                        <li>Consistent learner with strong interest in improving technical skills.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 5. CONTACT & LINKS SECTION -->
+            <section id="contact" class="content-section hidden">
+                <h2 class="text-4xl font-bold text-[#00C6FF] mb-8 border-b border-gray-700 pb-4">🤝 Connect & Collaborate</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Email & Phone -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-4">Contact Info</h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li>
+                                <span class="font-bold text-[#00C6FF] mr-2">Email:</span> 
+                                <a href="mailto:jyothiakkireddy1903@gmail.com" class="hover:underline">jyothiakkireddy1903@gmail.com</a>
+                            </li>
+                            <li>
+                                <span class="font-bold text-[#00C6FF] mr-2">Phone:</span> 
+                                <a href="tel:9032564024" class="hover:underline">9032564024</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Professional Links -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-4">Professional Links</h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li>
+                                <span class="font-bold text-[#00C6FF] mr-2">LinkedIn:</span>
+                                <a href="https://www.linkedin.com/in/jyothiakkireddy1903/" target="_blank" class="hover:underline hover:text-[#00C6FF]">Profile</a>
+                            </li>
+                            <li>
+                                <span class="font-bold text-[#00C6FF] mr-2">GitHub:</span>
+                                <a href="https://github.com/jyothirmai-akkireddy" target="_blank" class="hover:underline hover:text-[#00C6FF]">Repositories</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                     <!-- Interests -->
+                    <div class="p-6 rounded-xl glow-card">
+                        <h3 class="text-2xl font-semibold mb-4">Interests</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><span class="text-[#00C6FF] mr-2">🎨</span> Frontend Web Design</li>
+                            <li><span class="text-[#00C6FF] mr-2">💻</span> Coding</li>
+                            <li><span class="text-[#00C6FF] mr-2">🎬</span> Video Editing</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="mt-20 pt-8 border-t border-gray-800 text-center text-gray-500">
+            &copy; 2025 Jyothirmai Akkireddy. Crafted with HTML, Tailwind CSS, and pure JavaScript.
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+            const exploreLink = document.querySelector('.show-skills-link');
+            
+            // --- General Navigation Logic ---
+            function showSection(targetId) {
+                // Update navigation button active state
+                navLinks.forEach(link => {
+                    link.classList.remove('bg-[#00C6FF]/20', 'text-[#00C6FF]');
+                    link.classList.add('hover:bg-gray-800');
+                });
+                
+                // Hide all main content sections
+                sections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+
+                // Show the requested content section
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.remove('hidden');
+                    // Highlight the active link
+                    const activeLink = document.querySelector(`.nav-link[data-target="${targetId}"]`);
+                    if (activeLink) {
+                        activeLink.classList.add('bg-[#00C6FF]/20', 'text-[#00C6FF]');
+                        activeLink.classList.remove('hover:bg-gray-800');
+                    }
+                    window.location.hash = targetId;
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Attach event listeners to navigation buttons
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    showSection(e.currentTarget.getAttribute('data-target'));
+                });
+            });
+
+            // Handle the 'Explore My Skills' button click
+            exploreLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSection('skills');
+            });
+
+            // Initialize the correct section based on the URL hash or default to home
+            const initialSection = window.location.hash.substring(1) || 'home';
+            showSection(initialSection);
+
+
+            // --- Optimized Cosmic Trail (Canvas) Logic ---
+            const canvas = document.getElementById('cosmic-canvas');
+            const ctx = canvas.getContext('2d');
+            let mouse = { x: 0, y: 0 };
+            const particles = [];
+            
+            // Setup canvas size and event listeners
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            // Track mouse position
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+            
+            // Particle Class Definition
+            class Particle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    // Subtly random initial velocity
+                    this.vx = (Math.random() - 0.5) * 1.5; 
+                    this.vy = (Math.random() - 0.5) * 1.5; 
+                    this.size = Math.random() * 2.5 + 0.5; 
+                    this.alpha = 1; 
+                    this.life = Math.random() * 30 + 30; // Lifespan in frames
+                    // Cosmic color palette: subtle cyan/blue shimmer
+                    this.color = Math.random() < 0.5 ? 'rgba(0, 198, 255,' : 'rgba(255, 255, 255,'; 
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.alpha -= 1 / this.life; 
+                    this.size *= 0.98; // Subtle shrink over time
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.alpha;
+                    ctx.fillStyle = this.color + this.alpha + ')'; 
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            // Function to generate new particles near the cursor
+            let lastSpawnTime = 0;
+            const spawnInterval = 10; // Throttle rate (milliseconds)
+
+            function spawnParticles(x, y) {
+                const now = Date.now();
+                if (now - lastSpawnTime > spawnInterval) {
+                    const count = 3; // Number of particles per burst
+                    for (let i = 0; i < count; i++) {
+                        // Add slight jitter for a dispersed, stardust effect
+                        const jitterX = (Math.random() - 0.5) * 15;
+                        const jitterY = (Math.random() - 0.5) * 15;
+                        particles.push(new Particle(x + jitterX, y + jitterY));
+                    }
+                    lastSpawnTime = now;
+                }
+            }
+            
+            // Main animation loop (optimized using requestAnimationFrame)
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // 1. Clear the canvas slightly (creates a fading trail effect)
+                // CLEAR the canvas instead of filling with opaque color to support transparency
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // 2. Spawn particles at the current mouse position
+                spawnParticles(mouse.x, mouse.y);
+
+                // 3. Update and draw all particles
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.update();
+                    p.draw();
+
+                    // Remove dead particles from the array (optimization)
+                    if (p.alpha <= 0.1 || p.size <= 0.2) {
+                        particles.splice(i, 1);
+                    }
+                }
+            }
+
+            // Start the optimized canvas animation
+            animate();
+            
+        });
+    </script>
+</body>
+</html>
